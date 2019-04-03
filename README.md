@@ -19,11 +19,11 @@
     . ~/.git-functions.sh
 
     if [ "$color_prompt" = yes ]; then
-        BRANCH1='\[\033[01;31m\]$(parse_git_branch)\[\033[00m\]\'
-        BRANCH2='$(git-status-upstream)''$(git-multiline-status-prompt)'
-        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]'
-        PS1=${PS1%?}\n
-        PS1=${BRANCH2}\\n${PS1}'$ ' 
+        GITBASH='$(git-status-upstream)''$(git-multiline-status-prompt)'
+        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;35m\]\u:\[\033[01;34m\]\w\[\033[00m\]\'
+        PS1=${PS1%?}
+        PS1=${PS1%?}\n"\[\033[01;31m\][\[\033[01;33m\]\A \[\033[01;32m\]\D{%F}\[\033[01;37m\]\[\033[01;31m\]]"'\[\033[01;37m\]'
+        PS1=${GITBASH}\\n${PS1}'$\[\033[00m\] '
     else
         PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
     fi
