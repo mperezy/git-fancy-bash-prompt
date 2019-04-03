@@ -35,7 +35,7 @@ git-status-upstream() {
     COLOR=${OUTDATED}
 
     BRANCH= gitbranch-color|sed -e 's/(//g'|sed -e 's/)//g'
-    STATUS="$(git fetch 2>/dev/null && git status 2>/dev/null|grep -i 'Your branch'|sed -e 's/Your branch //g'|sed -e 's/\.//g'|sed -e 's/,//g'|sed -e s/\'//g)"
+    STATUS="$(git status 2>/dev/null|grep -i 'Your branch'|sed -e 's/Your branch //g'|sed -e 's/\.//g'|sed -e 's/,//g'|sed -e s/\'//g)"
     echo $STATUS | grep up-to-date >/dev/null 2>&1 && COLOR=${UPTODATE}
     [ -n "${STATUS}" ] && echo -en " \033[${COLOR}${STATUS}\033[00m"
 }
