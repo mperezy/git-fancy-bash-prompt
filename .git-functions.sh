@@ -1,3 +1,5 @@
+# Hellooooo!!
+
 log() {
     echo -e "$(date) -- ${@}"
 }
