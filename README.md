@@ -56,3 +56,26 @@
         ```
 
 * Now you will be able to see the fancy bash prompt for local git repositories.
+
+## Oh my Zsh
+* I started to use a hackintosh PC, so I tried to use this repo to customize the Terminal with no luck, but I found the [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) project, a framework to configurate and customize the `zsh` Terminal in MacOS.
+* I tried to build a new zsh theme based in the already installed theme called `apple`, you can find it [here](manutheme.zsh-theme).
+* To "install" it, please go to ` ~/.oh-my-zsh/themes/` folder and capy my theme in that folder, after that we can start use it editing `~/.zshrc` with your preferred text editor and do this next:
+    * ````
+      ...
+
+      # Set name of the theme to load --- if set to "random", it will
+      # load a random theme each time oh-my-zsh is loaded, in which case,
+      # to know which specific one was loaded, run: echo $RANDOM_THEME
+      # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+      ZSH_THEME="manutheme"
+      
+      ...
+      ````
+* The result will be like:
+
+    <img src="./img/img1.png">
+
+* Need to fix an issue. When I tried to do autocomplete with tab key I got this next:
+
+    <img src="./img/gif1.gif" width=80%>
