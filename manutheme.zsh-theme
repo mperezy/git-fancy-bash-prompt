@@ -17,24 +17,22 @@ zstyle ':vcs_info:*' formats       \
 zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 zstyle ':vcs_info:*' enable git cvs svn
 
-check_files () {
+check_git_files () {
   git_status=$(git status --short --untracked-files=all 2>/dev/null)
 
   if [ -z "$git_status" ]
   then
   else
-    echo $git_status
+    echo "\n$git_status"
   fi
 }
 
-current_time() {
-  echo "$fg[red]«$fg[green]"$(date +%d/%m/%y)" $fg[magenta]"$(date +%H:%M:%S)"$fg[red]»$reset_color $ "
+get_date() {
+  echo $(date +%d/%m/%y)
 }
 
-func () {
-  echo ""
-  check_files
-  current_time
+get_hours() {
+  echo $(date +%H:%M:%S)
 }
 
 theme_precmd () {
@@ -42,15 +40,12 @@ theme_precmd () {
     # func
 }
 
+# %n -> username
+# %m -> hostname
+
 setopt prompt_subst
-# PROMPT='%{$fg[magenta]%}$(toon)%{$reset_color%} %~/ %{$reset_color%}${vcs_info_msg_0_}%{$reset_color%}'
-PROMPT='%{$fg[cyan]%}$(toon)%{$reset_color%} %{$fg[yellow]%}%~/ %{$reset_color%}${vcs_info_msg_0_}%{$reset_color%}$(func)'
-# PROMPT="%(?:%{$fg_bold[green]%}%{%G➜%} :%{$fg_bold[red]%}%{%G➜%} )"
+PROMPT='%{$fg[white]%}$(toon)%{$reset_color%} %{$fg_bold[cyan]%}%n%{$fg[white]%}:%{$fg[yellow]%}%~/ %{$reset_color%}${vcs_info_msg_0_}%{$reset_color%}$(check_git_files)
+%{$fg[red]%}«%{$fg[green]%}$(get_date)% %{$fg[magenta]%}$(get_hours)%{$fg[red]%}»%{$reset_color%}%{$fg_bold[white]%} $% %{$reset_color%} '
 
 autoload -U add-zsh-hook
 add-zsh-hook precmd theme_precmd
-
-ZSH_THEME_GIT_PROMPT_PREFIX="("
-ZSH_THEME_GIT_PROMPT_SUFFIX=")"
-ZSH_THEME_GIT_PROMPT_DIRTY=" ✗"
-ZSH_THEME_GIT_PROMPT_CLEAN=" ✔"

@@ -79,3 +79,7 @@
 * Need to fix an issue. When I tried to do autocomplete with tab key I got this next:
 
     <img src="./img/gif1.gif" width=80%>
+
+* The issue was solved and also added the username. The results are:
+
+    <img src="./img/gif2.gif" width=80%>
