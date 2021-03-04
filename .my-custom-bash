@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# CURRENT_DATE_TIME="$(echo -e "\e[01;91m«\e[01;92m$(date +%D 2>&1) \e[01;35m$(date +%H 2>&1)\e[05;97m:\e[01;35m$(date +%M 2>&1)\e[01;91m»\e[00;97m")"
+CURRENT_DATE_TIME="$(echo -e "\e[01;91m«\e[01;92m$(date +%D) \e[01;35m$(date +%R)\e[01;91m»\e[00;97m")"
+CUSTOM_PROMPT='\n$(TMP=$(git status -s); if [ -z "$TMP" ]; then echo "\e[01;91m«\e[01;92m$(date +%D) \e[01;35m$(date +%R)\e[01;91m»\e[00;97m $ "; else echo -n "$TMP"; echo -n "\n\e[01;91m«\e[01;92m$(date +%D) \e[01;35m$(date +%R)\e[01;91m»\e[00;97m $ "; fi;)'
+
+GIT_PROMPT_ONLY_IN_REPO=1
+GIT_PROMPT_SHOW_UPSTREAM=1 # To display the repository upstream
+GIT_PROMPT_THEME_FILE="$HOME/.git-prompt-colors.sh"
+GIT_PROMPT_THEME_NAME=Custom
+GIT_PROMPT_THEME=Manu
+
+if [ "$(uname)" == "Darwin" ]; then
+    PS1_SCRIPT_DIR="$(brew --prefix)/opt/bash-git-prompt/share/"
+else
+    PS1_SCRIPT_DIR="$HOME/.bash-git-prompt"
+fi
+
+if [ -z "${BYPASS_DEVSETUP_PS1}" ]; then
+    if [ "${BASIC_PROMPT}" ]; then
+        # From the actual scripts in Ubuntu which do this...
+        if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	    color_prompt=yes
+        else
+	    color_prompt=
+        fi
+        if [ "$color_prompt" = yes ]; then
+            export PS1="\[\e]0;\u@\h: \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
+        else
+            export PS1='\u@\h:\w\$ '
+        fi
+    elif [ -f "${PS1_SCRIPT_DIR}/gitprompt.sh" ]; then
+        if [ "${SHOW_GIT_STATUS_IN_PROMPT}" ]; then
+            export GIT_PROMPT_END=${CUSTOM_PROMPT}
+        fi
+        __GIT_PROMPT_DIR=$PS1_SCRIPT_DIR
+        GIT_PROMPT_ONLY_IN_REPO="${GIT_PROMPT_ONLY_IN_REPO:-1}"
+        source "${PS1_SCRIPT_DIR}/gitprompt.sh"
+    fi
+fi

@@ -1,7 +1,6 @@
 # Fancy Bash Prompt for Git local repositories
 
-## How to install it
-
+## **How to install it**
 * If you are on the current git repo folder in your machine, copy the `.git-functions.sh` file on `/home/$YOUR-USER` using the file system GUI or using the terminal with:
     ```
     $ cp .git-functions.sh ~/.git-functions.sh
@@ -55,9 +54,11 @@
         $ git config --global credential.helper store
         ```
 
-* Now you will be able to see the fancy bash prompt for local git repositories.
+* Now you will be able to see the fancy bash prompt for local git repositories as follows:
 
-## Oh my Zsh
+    <img src="./img/img3.png" width=45%>
+
+## **Oh my Zsh**
 * I started to use a hackintosh PC, so I tried to use this repo to customize the Terminal with no luck, but I found the [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) project, a framework to configurate and customize the `zsh` Terminal in MacOS.
 * I tried to build a new zsh theme based in the already installed theme called `apple`, you can find it [here](manutheme.zsh-theme).
 * To "install" it, please go to ` ~/.oh-my-zsh/themes/` folder and capy my theme in that folder, after that we can start use it editing `~/.zshrc` with your preferred text editor and do this next:
@@ -83,3 +84,44 @@
 * The issue was solved and also added the username. The results are:
 
     <img src="./img/gif2.gif" width=80%>
+
+## **Bash Git Prompt**
+* I found a [repo](https://github.com/magicmonty/bash-git-prompt) which has a good looking git prompt, you can take a look at it to how to install it, but I can show you the necessary command for it as follows:
+    
+    ```
+    $ git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1
+    ```
+
+    After that, you will a new folder in your home directory called `~/.bash-git-prompt`
+
+* Now in in order to start use this repo but with a custom theme and displaying the untracked files in your git folder, you'll need to follow these next steps:
+
+    * You need to create a new file in your home directory, I named it `~/.my-custom-bash`, after create the file we need change the permissions on it, for that please follow these:
+
+        ```
+        $ touch ~/.my-custom-bash
+        $ chmod 644 ~/.my-custom-bash
+        -rw-r--r--  1 <yourusername> <yourgroup>  1702 Mar  4 11:36 .my-custom-bash
+        ```
+
+    * Now we need to import the created file at the end on the `~/.bashrc` file as follows:
+
+        ```
+        ....
+
+        export GIT_PROMPT_THEME_FILE="yes"
+        export SHOW_GIT_STATUS_IN_PROMPT="yes"
+        [ -f $HOME/.my-custom-bash ] && . $HOME/.my-custom-bash
+        ```
+    
+    * Now, we need to copy and pase the content of [this](.my-custom-bash) file on our `~/.my-custom-bash` file, or just copy and paste the [this](.my-custom-bash) in `~/` directory, but remember, to check the permissions of the recently copied file with `ls -l ~` command and update them (if it's necessary) using the steps above.
+
+    * After that, we need to copy and pase the [custom theme file](MyTheme.bgptheme) in `~/.bash-git-prompt/themes/` and update the permissions as soon as you placed the theme in with:
+    
+        ```
+        $ chmod 644 ~/.bash-git-prompt/themes/MyTheme.bgptheme
+        ```
+    
+* Finally, you should be able to check the prompt like this:
+
+    <img src="./img/img2.png" width=50%>
