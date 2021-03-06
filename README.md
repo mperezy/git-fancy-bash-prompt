@@ -125,3 +125,7 @@
 * Finally, you should be able to check the prompt like this:
 
     <img src="./img/img2.png" width=50%>
+
+* **Issue detected**: Trying to navigate with the ***up arrow*** key checking previous commands, if one of those was too large, I got the next issue in prompt that should be fixed:
+
+    <img src="./img/gif3.gif">
