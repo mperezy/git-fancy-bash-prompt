@@ -129,3 +129,8 @@
 * **Issue detected**: Trying to navigate with the ***up arrow*** key checking previous commands, if one of those was too large, I got the next issue in prompt that should be fixed:
 
     <img src="./img/gif3.gif">
+
+* **Issue solved**: The issue previosly detected was solved, you only need to replace the content of [`.my-custom-bash`](.my-custom-bash) into yours, and the result will be:
+
+    <img src="./img/gif4.gif">
+    Also the looking of the date and hour was updated !
