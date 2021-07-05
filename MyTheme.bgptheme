@@ -31,6 +31,7 @@ unset_git_prompt_colors() {
 define_helpers() {
   # GitStatus="$(TMP=$(git status -s); if [ -z "$TMP" ]; then echo ""; else echo -n "$TMP\n"; fi;)"
   # Time12a="${GitStatus}${Red}«${BoldGreen}$(date +%D)${ResetColor} ${BoldMagenta}$(date +%R)${Red}»${ResetColor}"
+  Time12a="${Red}«${BoldGreen}$(date +%D)${ResetColor} ${BoldMagenta}$(date +%R)${Red}»${ResetColor}"
   PathShort="\w";
 }
 
@@ -82,10 +83,10 @@ override_git_prompt_colors() {
   # template for displaying the current remote tracking branch
   # use the placeholder _UPSTREAM_ will be replaced with
   # the name of the current remote tracking branch
-  if [ -z ${GIT_PROMPT_UPSTREAM+x} ]; then GIT_PROMPT_UPSTREAM=" ${BoldRed}☁️  ${GreenBg}${BoldBlack}_UPSTREAM_${ResetColor}"; fi
+  if [ -z ${GIT_PROMPT_UPSTREAM+x} ]; then GIT_PROMPT_UPSTREAM=" ☁️  ${GreenBg}${BoldBlack}_UPSTREAM_${ResetColor}"; fi
 
   # _LAST_COMMAND_INDICATOR_ will be replaced by the appropriate GIT_PROMPT_COMMAND_OK OR GIT_PROMPT_COMMAND_FAIL
-  if [ -z ${GIT_PROMPT_START_USER+x} ]; then GIT_PROMPT_START_USER="_LAST_COMMAND_INDICATOR_ 🐧 ${BoldYellow}${PathShort}${ResetColor}"; fi
+  if [ -z ${GIT_PROMPT_START_USER+x} ]; then GIT_PROMPT_START_USER=$(prompt-timing-right)"_LAST_COMMAND_INDICATOR_ 🐧 ${BoldYellow}${PathShort}${ResetColor}"; fi
   if [ -z ${GIT_PROMPT_START_ROOT+x} ]; then GIT_PROMPT_START_ROOT="${GIT_PROMPT_START_USER}"; fi
   if [ -z ${GIT_PROMPT_END_USER+x} ]; then GIT_PROMPT_END_USER=" \n${White}${Time12a}${ResetColor} $ "; fi
   if [ -z ${GIT_PROMPT_END_ROOT+x} ]; then GIT_PROMPT_END_ROOT=" \n${White}${Time12a}${ResetColor} # "; fi
