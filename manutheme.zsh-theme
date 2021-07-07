@@ -6,69 +6,66 @@ get_git_dirty() {
   git diff --quiet || echo '*'
 }
 
-#ZSH_THEME_GIT_PROMPT_MODIFIED=" ✚"
-#ZSH_THEME_GIT_PROMPT_STASHED=" ●"
-#ZSH_THEME_GIT_PROMPT_AHEAD="↑·"
-#ZSH_THEME_GIT_PROMPT_BEHIND="↓·"
+#use extended color pallete if available
+if [[ $TERM = *256color* || $TERM = *rxvt* ]]; then
+    turquoise="%F{81}"
+    orange="%F{166}"
+    purple="%F{135}"
+    hotpink="%F{161}"
+    limegreen="%F{118}"
+else
+    turquoise="$fg[cyan]"
+    orange="$fg[yellow]"
+    purple="$fg[magenta]"
+    hotpink="$fg[red]"
+    limegreen="$fg[green]"
+fi
+
+RESET_COLOR="%{${reset_color}%}"
+
 #ZSH_THEME_GIT_PROMPT_NO_REMOTE_TRACKING="${WhiteBg}${BoldBlack}(your branch is no pushed yet)"
+
+isBranchTracked() {
+  gitcmd=$(git for-each-ref --format='%(upstream:short)' "$(git symbolic-ref -q HEAD)")
+
+  if [ -z $gitcmd ]; then
+    echo 0
+  else
+    echo 1
+  fi
+}
 
 # Add up/down arrows after branch name, if there are changes to pull/to push
 zstyle ':vcs_info:git+post-backend:*' hooks git-post-backend-updown
 +vi-git-post-backend-updown() {
   git rev-parse @{upstream} >/dev/null 2>&1 || return
-  local -a x; x=( $(git rev-list --left-right --count HEAD...@{upstream} ) )
+  
+  local -a updown; updown=( $(git rev-list --left-right --count HEAD...@{upstream} ) )
+  local -a unstaged; unstaged=( $(git diff --name-status | sed '/^U/d' | wc -l | tr -d ' ' ) )
+  local -a staged; staged=( $(git diff --staged --name-status | sed '/^U/d' | wc -l | tr -d ' ' ) )
+  local -a stashed; stashed=( $(git stash list | sed '/^U/d' | wc -l | tr -d ' ') )
+  local -a untracked; untracked=( $(git ls-files --others --exclude-standard | sed '/^U/d' | wc -l | tr -d ' ' ) )
+  local -a notrackedbranch; notrackedbranch=( $( isBranchTracked ) )
+
   hook_com[branch]+="%f" # end coloring
-  (( x[2] )) && hook_com[branch]+=" ↓·${x[2]}"
-  (( x[1] )) && hook_com[branch]+=" ↑·${x[1]}"
+
+  # TODO: Need to double check this functionality
+  (( notrackedbranch = 0 )) && hook_com[branch]+="NOT TRACKED"
+
+  (( updown[2] )) && hook_com[branch]+=" ↓·${updown[2]}"
+  (( updown[1] )) && hook_com[branch]+=" ↑·${updown[1]}"
+
+  (( unstaged || staged || stashed || untracked )) && hook_com[branch]+="%F{red} |"
+  (( unstaged )) && hook_com[branch]+=" %{$turquoise%}✚${unstaged}${RESET_COLOR}"
+  (( staged )) && hook_com[branch]+=" %{$limegreen%}●${staged}${RESET_COLOR}"
+  (( stashed )) && hook_com[branch]+=" %{$orange%}⚑${stashed}${RESET_COLOR}"
+  (( untracked )) && hook_com[branch]+=" %{$purple%}…${untracked}${RESET_COLOR}"
+
   return 0
 }
 
-#zstyle ':vcs_info:*' formats "%u%c%m"
-#zstyle ':vcs_info:git*+set-message:*' hooks untracked-git
-
-#+vi-untracked() {
-#  if [[ -n "$(git ls-files --others --exclude standard)" ]]; then
-#      hook_com[misc]='?'
-#  else
-#      hook_com[misc]=''
-#  fi
-#}
-
-hasStashedFiles() {
-  getStashedCount=$(git rev-list --walk-reflogs --count refs/stash)
-  stashedFlag=" $fg_bold[cyan]⚑$getStashedCount$reset_color"
-
-  if [ -z "$getStashedCount" ]
-  then
-  else 
-    echo $stashedFlag
-  fi
-}
-
-getStagedCount() {
-  stagedFiles=$(git diff --staged --name-status | sed '/^U/d' | wc -l | tr -d ' ')
-
-  if [ $stagedFiles = 0 ]
-  then
-  else
-    echo $stagedFiles
-  fi
-}
-
-getUnstagedCount() {
-  unstagedFiles=$(git diff --name-status | sed '/^U/d' | wc -l | tr -d ' ')
-
-  if [ $unstagedFiles = 0 ]
-  then
-  else
-    echo $unstagedFiles
-  fi
-}
-
 autoload -Uz vcs_info
-zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' unstagedstr "%F{cyan} ✚"   #$(getUnstagedCount)"   # display this when there are unstaged changes
-zstyle ':vcs_info:*' stagedstr "%F{green} ●"   #$(getStagedCount)"  # display this when there are staged changes
+zstyle ':vcs_info:hg:*' get-revision true
 zstyle ':vcs_info:*' actionformats \
     '%F{5}%F{5}[%F{2}%b%F{3}|%F{1}%a%c%u%F{5}]%f '
 zstyle ':vcs_info:*' formats       \

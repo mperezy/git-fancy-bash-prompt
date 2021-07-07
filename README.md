@@ -85,6 +85,16 @@
 
     <img src="./img/gif2.gif" width=80%>
 
+* [Added] Display arrows in prompt if the repository is ahead, behind or is diverged from remote:
+
+    <img src="./img/img5.png" width=80%>
+    <img src="./img/img6.png" width=80%>
+    <img src="./img/img7.png" width=80%>
+
+* [Added] Display in prompt the count of unstaged, staged, untracked and stashed files in the repository:
+
+    <img src="./img/img4.png" width=80%>
+
 ## **Bash Git Prompt**
 * I found a [repo](https://github.com/magicmonty/bash-git-prompt) which has a good looking git prompt, you can take a look at it to how to install it, but I can show you the necessary command for it as follows:
     
