@@ -22,35 +22,21 @@ else
 fi
 
 RESET_COLOR="%{${reset_color}%}"
-
-#ZSH_THEME_GIT_PROMPT_NO_REMOTE_TRACKING="${WhiteBg}${BoldBlack}(your branch is no pushed yet)"
-
-isBranchTracked() {
-  gitcmd=$(git for-each-ref --format='%(upstream:short)' "$(git symbolic-ref -q HEAD)")
-
-  if [ -z $gitcmd ]; then
-    echo 0
-  else
-    echo 1
-  fi
-}
+BACKGROUND_WHITE="%{$bg[white]%}"
+BOLD_BLACK="%{$fg_bold[black]%}"
 
 # Add up/down arrows after branch name, if there are changes to pull/to push
 zstyle ':vcs_info:git+post-backend:*' hooks git-post-backend-updown
 +vi-git-post-backend-updown() {
-  git rev-parse @{upstream} >/dev/null 2>&1 || return
+  hook_com[branch]+="%f" # end coloring
+
+  git rev-parse @{upstream} >/dev/null 2>&1 || hook_com[branch]+="%f ${BACKGROUND_WHITE}${BOLD_BLACK}(This branch is not pushed yet)${RESET_COLOR}" return
   
   local -a updown; updown=( $(git rev-list --left-right --count HEAD...@{upstream} ) )
   local -a unstaged; unstaged=( $(git diff --name-status | sed '/^U/d' | wc -l | tr -d ' ' ) )
   local -a staged; staged=( $(git diff --staged --name-status | sed '/^U/d' | wc -l | tr -d ' ' ) )
   local -a stashed; stashed=( $(git stash list | sed '/^U/d' | wc -l | tr -d ' ') )
   local -a untracked; untracked=( $(git ls-files --others --exclude-standard | sed '/^U/d' | wc -l | tr -d ' ' ) )
-  local -a notrackedbranch; notrackedbranch=( $( isBranchTracked ) )
-
-  hook_com[branch]+="%f" # end coloring
-
-  # TODO: Need to double check this functionality
-  (( notrackedbranch = 0 )) && hook_com[branch]+="NOT TRACKED"
 
   (( updown[2] )) && hook_com[branch]+=" ↓·${updown[2]}"
   (( updown[1] )) && hook_com[branch]+=" ↑·${updown[1]}"
@@ -101,7 +87,7 @@ theme_precmd () {
 
 setopt prompt_subst
 PROMPT='%{$fg[white]%}$(toon)%{$reset_color%} %{$fg_bold[cyan]%}%n%{$fg[white]%}:%{$fg[yellow]%}%~/ %{$reset_color%}${vcs_info_msg_0_}%{$reset_color%}$(check_git_files)
-%{$fg[red]%}«%{$fg[green]%}$(get_date)% %{$fg[magenta]%}$(get_hours)%{$fg[red]%}»%{$reset_color%}%{$fg_bold[white]%} $% %{$reset_color%} '
+%{$fg[red]%}«%{$fg[green]%}$(get_date)%  %{$fg[magenta]%}$(get_hours)%{$fg[red]%}»%{$reset_color%}%{$fg_bold[white]%} $% %{$reset_color%} '
 
 autoload -U add-zsh-hook
 add-zsh-hook precmd theme_precmd
