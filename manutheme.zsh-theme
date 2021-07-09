@@ -6,6 +6,8 @@ get_git_dirty() {
   git diff --quiet || echo '*'
 }
 
+# Reference: https://gist.github.com/jnjosh/4464653
+
 #use extended color pallete if available
 if [[ $TERM = *256color* || $TERM = *rxvt* ]]; then
     turquoise="%F{81}"
@@ -26,7 +28,7 @@ BACKGROUND_WHITE="%{$bg[white]%}"
 BOLD_BLACK="%{$fg_bold[black]%}"
 
 getHeadHashCommit() {
-  echo "\n$(log "The HEAD commit hash is =>")$(header $(getLastCommitsHash yes 1 | cut -d' ' -f 2 | cut -c-7))"
+  [ -d .git ] && echo "\n$(log "The HEAD commit hash is =>")$(header $(getLastCommitsHash yes 1 | cut -d' ' -f 2 | cut -c-7))"
 }
 
 # Add up/down arrows after branch name, if there are changes to pull/to push
