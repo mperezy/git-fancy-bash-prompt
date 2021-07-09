@@ -12,6 +12,7 @@ ResetColor='\[\033[0;0m\]'
 
 DATE_HOUR="\n${BoldRed}[${BoldCyan}$(date +%D) ${BoldGreen}$(date +%R)${BoldRed}]${ResetColor}"
 CUSTOM_PROMPT_STATUS='$(TMP=$(git status -s); if [ -z "$TMP" ]; then echo ""; else echo -n "\n$TMP"; fi;)'
+HEAD_COMMIT_HASH='\n$(getHeadHashCommit)'
 
 if [ "$(uname)" == "Darwin" ]; then
     PS1_SCRIPT_DIR="$(brew --prefix)/opt/bash-git-prompt/share/"
@@ -34,7 +35,7 @@ if [ -z "${BYPASS_DEVSETUP_PS1}" ]; then
         fi
     elif [ -f "${PS1_SCRIPT_DIR}/gitprompt.sh" ]; then
         if [ "${SHOW_GIT_STATUS_IN_PROMPT}" ]; then
-            export GIT_PROMPT_END=${CUSTOM_PROMPT_STATUS}${DATE_HOUR}" $ "
+            export GIT_PROMPT_END=${HEAD_COMMIT_HASH}${CUSTOM_PROMPT_STATUS}${DATE_HOUR}" $ "
         fi
         __GIT_PROMPT_DIR=$PS1_SCRIPT_DIR
         GIT_PROMPT_ONLY_IN_REPO="${GIT_PROMPT_ONLY_IN_REPO:-1}"

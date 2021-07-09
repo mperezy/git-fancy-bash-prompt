@@ -25,6 +25,10 @@ RESET_COLOR="%{${reset_color}%}"
 BACKGROUND_WHITE="%{$bg[white]%}"
 BOLD_BLACK="%{$fg_bold[black]%}"
 
+getHeadHashCommit() {
+  echo "\n$(log "The HEAD commit hash is =>")$(header $(getLastCommitsHash yes 1 | cut -d' ' -f 2 | cut -c-7))"
+}
+
 # Add up/down arrows after branch name, if there are changes to pull/to push
 zstyle ':vcs_info:git+post-backend:*' hooks git-post-backend-updown
 +vi-git-post-backend-updown() {
@@ -86,7 +90,7 @@ theme_precmd () {
 # %m -> hostname
 
 setopt prompt_subst
-PROMPT='%{$fg[white]%}$(toon)%{$reset_color%} %{$fg_bold[cyan]%}%n%{$fg[white]%}:%{$fg[yellow]%}%~/ %{$reset_color%}${vcs_info_msg_0_}%{$reset_color%}$(check_git_files)
+PROMPT='%{$fg[white]%}$(toon)%{$reset_color%} %{$fg_bold[cyan]%}%n%{$fg[white]%}:%{$fg[yellow]%}%~/ %{$reset_color%}${vcs_info_msg_0_}%{$reset_color%}$(getHeadHashCommit)$(check_git_files)
 %{$fg[red]%}«%{$fg[green]%}$(get_date)%  %{$fg[magenta]%}$(get_hours)%{$fg[red]%}»%{$reset_color%}%{$fg_bold[white]%} $% %{$reset_color%} '
 
 autoload -U add-zsh-hook

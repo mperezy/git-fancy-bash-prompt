@@ -58,7 +58,7 @@
 
     <img src="./img/img3.png" width=45%>
 
-## **Oh my Zsh**
+## **Oh my Zsh [MacOS]**
 * I started to use a hackintosh PC, so I tried to use this repo to customize the Terminal with no luck, but I found the [Oh My Zsh](https://github.com/ohmyzsh/ohmyzsh) project, a framework to configurate and customize the `zsh` Terminal in MacOS.
 * I tried to build a new zsh theme based in the already installed theme called `apple`, you can find it [here](manutheme.zsh-theme).
 * To "install" it, please go to ` ~/.oh-my-zsh/themes/` folder and capy my theme in that folder, after that we can start use it editing `~/.zshrc` with your preferred text editor and do this next:
@@ -95,11 +95,15 @@
 
     <img src="./img/img4.png" width=80%>
 
-* **[Added]** Display in prompt a brief message if the current local branch is not tracked in remote:
+* Display in prompt a brief message if the current local branch is not tracked in remote:
 
     <img src="./img/img8.png" width=80%>
 
-## **Bash Git Prompt**
+* **[Added]** Display in prompt the HEAD commit hash given a git repostory:
+
+    <img src="./img/img9.png" width=80%>
+
+## **Bash Git Prompt [Linux]**
 * I found a [repo](https://github.com/magicmonty/bash-git-prompt) which has a good looking git prompt, you can take a look at it to how to install it, but I can show you the necessary command for it as follows:
     
     ```
@@ -148,3 +152,7 @@
 
     <img src="./img/gif4.gif">
     Also the looking of the date and hour was updated !
+
+* **[Added]** Display in prompt the HEAD commit hash given a git repostory:
+
+    <img src="./img/img10.png" width=80%>
