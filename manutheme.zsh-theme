@@ -28,7 +28,8 @@ BACKGROUND_WHITE="%{$bg[white]%}"
 BOLD_BLACK="%{$fg_bold[black]%}"
 
 getHeadHashCommit() {
-  [ -d .git ] && echo "\n$(log "The HEAD commit hash is =>")$(header $(getLastCommitsHash yes 1 | cut -d' ' -f 2 | cut -c-7))"
+  inside_git_repo="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
+  [ "$inside_git_repo" ] && echo "\n$(log "The HEAD commit hash is =>")$(header $(getLastCommitsHash yes 1 | cut -d' ' -f 2 | cut -c-7))"
 }
 
 # Add up/down arrows after branch name, if there are changes to pull/to push
