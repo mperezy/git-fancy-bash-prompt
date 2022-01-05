@@ -27,9 +27,9 @@ RESET_COLOR="%{${reset_color}%}"
 BACKGROUND_WHITE="%{$bg[white]%}"
 BOLD_BLACK="%{$fg_bold[black]%}"
 
-getHeadHashCommit() {
+getHeadHashCommitZsh() {
   inside_git_repo="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
-  [ "$inside_git_repo" ] && echo "\n$(log "The HEAD commit hash is =>")$(header $(getLastCommitsHash yes 1 | cut -d' ' -f 2 | cut -c-7))"
+  [ "$inside_git_repo" ] && echo "\n$(getHeadHashCommit)"
 }
 
 # Add up/down arrows after branch name, if there are changes to pull/to push
@@ -93,7 +93,7 @@ theme_precmd () {
 # %m -> hostname
 
 setopt prompt_subst
-PROMPT='%{$fg[white]%}$(toon)%{$reset_color%} %{$fg_bold[cyan]%}%n%{$fg[white]%}:%{$fg[yellow]%}%~/ %{$reset_color%}${vcs_info_msg_0_}%{$reset_color%}$(getHeadHashCommit)$(check_git_files)
+PROMPT='%{$fg[white]%}$(toon)%{$reset_color%} %{$fg_bold[cyan]%}%n%{$fg[white]%}:%{$fg[yellow]%}%~/ %{$reset_color%}${vcs_info_msg_0_}%{$reset_color%}$(getHeadHashCommitZsh)$(check_git_files)
 %{$fg[red]%}«%{$fg[green]%}$(get_date)%  %{$fg[magenta]%}$(get_hours)%{$fg[red]%}»%{$reset_color%}%{$fg_bold[white]%} $% %{$reset_color%} '
 
 autoload -U add-zsh-hook
