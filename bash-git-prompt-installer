@@ -1,0 +1,19 @@
+#!/bin/bash
+
+cp .git-functions.sh ~
+echo '. ~/.git-functions.sh' >> ~/.bashrc
+
+git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1
+
+cp .my-custom-bash ~
+chmod 644 ~/.my-custom-bash
+
+echo 'export GIT_PROMPT_THEME_FILE="yes"' >> ~/.bashrc
+echo 'export SHOW_GIT_STATUS_IN_PROMPT="yes"' >> ~/.bashrc
+echo '[ -f $HOME/.my-custom-bash ] && . $HOME/.my-custom-bash' >> ~/.bashrc
+
+cp MyTheme.bgptheme ~/.bash-git-prompt/themes/
+chmod 644 ~/.bash-git-prompt/themes/MyTheme.bgptheme
+
+echo "**** The Git Fancy Bash Prompt was successfully installed. ****"
+echo "**** Please open a new terminal tab/window and close this one to see the results. Enjoy!! *****"

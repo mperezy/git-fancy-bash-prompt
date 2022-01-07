@@ -3,7 +3,8 @@ log() {
 }
 
 prompt-timing-nocolor() {
-    echo -en "$(date) ($(seconds2days ${SECONDS})s)"
+    # echo -en "$(date) ($(seconds2days ${SECONDS})s)"
+    echo -en "$(date +%A) $(date +%d)  $(date +%B), $(date +%Y)"
 }
 
 prompt-timing-right-nocolor() {
